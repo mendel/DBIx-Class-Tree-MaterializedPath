@@ -14,7 +14,7 @@ use base qw(DBIx::Class);
 
 =head1 NAME
 
-DBIx::Class::Tree::MaterializedPath - The great new DBIx::Class::Tree::MaterializedPath!
+DBIx::Class::Tree::MaterializedPath - DBIx::Class plugin for storing tree data in the materialized path model
 
 =head1 VERSION
 

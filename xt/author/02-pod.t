@@ -1,8 +1,9 @@
-#!perl -T
+#!/usr/bin/env perl -T
 
 use strict;
 use warnings;
-use Test::More;
+
+use Test::Most;
 
 # Ensure a recent version of Test::Pod
 my $min_tp = 1.22;

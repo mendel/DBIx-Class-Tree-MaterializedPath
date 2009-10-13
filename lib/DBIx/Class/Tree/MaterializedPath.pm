@@ -1,6 +1,5 @@
 package DBIx::Class::Tree::MaterializedPath;
 
-#TODO copy skeleton stuff (Makefile.PL, MANIFEST.SKIP, .gitignore, ... from lib::find)
 #TODO use M:I::PodInherit
 #TODO tests
 # * set up SQLite environment

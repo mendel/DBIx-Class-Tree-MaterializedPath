@@ -2,9 +2,14 @@ blib*
 Makefile
 Makefile.old
 Build
+Build.bat
 _build*
 pm_to_blib*
 *.tar.gz
 .lwpcookies
-DBIx-Class-Tree-MaterializedPath-*
 cover_db
+META.yml
+MANIFEST
+MANIFEST.bak
+inc/
+README

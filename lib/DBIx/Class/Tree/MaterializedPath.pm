@@ -11,6 +11,8 @@ package DBIx::Class::Tree::MaterializedPath;
 use warnings;
 use strict;
 
+use 5.005;
+
 use base qw(DBIx::Class);
 
 use Scalar::Util qw(blessed looks_like_number);

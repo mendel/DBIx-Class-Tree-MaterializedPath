@@ -101,8 +101,6 @@ Default: 'materialized_path'
 __PACKAGE__->mk_classdata(materialized_path_column => 'materialized_path');
 
 
-=cut
-
 =head2 $class->materialized_path_separator([$separator_string])
 
 Gets/sets the separator string (usually a character) in the materialized path.

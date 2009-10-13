@@ -151,10 +151,12 @@ sub _set_parent
 {
   my ($self, $parent) = (shift, @_);
 
-  if (!blessed $parent && (!defined $parent || (looks_like_number($parent) && $parent == 0)) {
+  if (!blessed $parent &&
+    (!defined $parent || (looks_like_number($parent) && $parent == 0))
+  ) {
     #FIXME extract this duplicated code into a method
     my $descendants_rs = $self->descendants;
-    while (my $descendant = $descendant_rs->next) {
+    while (my $descendant = $descendants_rs->next) {
       my @former_parent_ids = $descendant->_materialized_path_elements;
       $descendant->_materialized_path_elements(
         @former_parent_ids[ -($descendant->_depth - $self->_depth) .. -1 ]
@@ -170,12 +172,11 @@ sub _set_parent
   if (blessed $parent) {
     $parent_node = $parent;
   } else {
-      my $rs = $self->result_source->resultset;
+    my $rs = $self->result_source->resultset;
 
-      $parent_node = $rs->find({
-          $self->_qualified_primary_key_column($rs) => $parent,
-      }) or $self->throw_exception("Cannot find parent node by id (id: $parent)");
-    }
+    $parent_node = $rs->find({
+        $self->_qualified_primary_key_column($rs) => $parent,
+    }) or $self->throw_exception("Cannot find parent node by id (id: $parent)");
   }
 
   $self->throw_exception("Cannot make a node the parent of itself") if
@@ -189,7 +190,7 @@ sub _set_parent
   my @new_grandparent_ids = $parent_node->_materialized_path_elements;
 
   my $descendants_rs = $self->descendants;
-  while (my $descendant = $descendant_rs->next) {
+  while (my $descendant = $descendants_rs->next) {
     my @former_parent_ids = $descendant->_materialized_path_elements;
     $descendant->_materialized_path_elements(
       @new_grandparent_ids,

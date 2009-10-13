@@ -1,6 +1,8 @@
 package DBIx::Class::Tree::MaterializedPath;
 
+#TODO write DESCRIPTION (describe MP model and it's performance, mention that there can be more than one root nodes, root nodes have 0 as the parent, the id is usually an integer, ...)
 #TODO use M:I::PodInherit
+#TODO override ->insert to set the MP
 #TODO tests
 # * set up SQLite environment
 # * import a set of rows with known paths (1, 1.1, 1.2, 1.2.1, 1.2.2, 1.2.3, 1.2.3.1, 1.3) and check all possible relationship getters (->parent(), ->parents(), ->children(), ->ancestors(), ->descendants(), ->siblings(), ->is_root, ->is_branch, ->is_leaf)
@@ -35,21 +37,54 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+Set up the node result class:
 
-Perhaps a little code snippet.
+  package MyApp::Schema::Node;
 
-    use DBIx::Class::Tree::MaterializedPath;
+  __PACKAGE__->load_components(qw(
+    Tree::MaterializedPath
+    # ...
+  ));
 
-    my $foo = DBIx::Class::Tree::MaterializedPath->new();
-    ...
+  __PACKAGE__->add_columns(
+    node_id => {
+      data_type => 'integer',
+      is_nullable => 0,
+      is_auto_increment => 1,
+    },
+    materialized_path => {
+      data_type => 'text',    # make sure all your MPs fit into it!
+      is_nullable => 0,
+    },
+    depth => {
+      data_type => 'integer',
+      is_nullable => 0,
+    },
+    # ...
+  );
 
-=head1 EXPORT
+  __PACKAGE__->set_primary_key('node_id');
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+  __PACKAGE__->materialized_path_column('materialized_path'); # or use the default
+  __PACKAGE__->materialized_path_depth_column('depth');       # or use the default
+  __PACKAGE__->materialized_path_separator('.');              # or use the default
 
-=cut
+Now you can use the tree much like with L<DBIx::Class::Tree::AdjacencyList>
+(except that it scales better for most workloads:-).
+
+  use MyApp::Schema::Node;
+
+  my $node = MyApp::Schema::Node->create({ ... });
+
+  my $children_rs = $employee->children;
+  my @siblings = $employee->children;
+
+  my $parent = $employee->parent;
+  $employee->parent(7);
+
+=head1 DESCRIPTION
+
+FIXME
 
 =head1 METHODS
 
@@ -679,21 +714,32 @@ sub _materialized_path_elements
   return @node_ids;
 }
 
+=head1 TODO
+
+=head1 CAVEATS
+
+=head1 SEE ALSO
+
+L<DBIx::Class>, L<DBIx::Class::Tree>, L<DBIx::Class::Tree::AdjacencyList>
+
 =head1 AUTHOR
 
 Norbert Buchmüller, C<< <norbi at nix.hu> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-dbix-class-tree-materializedpath at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=DBIx-Class-Tree-MaterializedPath>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to
+C<bug-dbix-class-tree-materializedpath at rt.cpan.org>, or through the web
+interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=DBIx-Class-Tree-MaterializedPath>.
+I will be notified, and then you'll automatically be notified of progress on
+your bug as I make changes.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc DBIx::Class::Tree::MaterializedPath
+  perldoc DBIx::Class::Tree::MaterializedPath
 
 
 You can also look for information at:
@@ -721,6 +767,8 @@ L<http://search.cpan.org/dist/DBIx-Class-Tree-MaterializedPath/>
 
 =head1 ACKNOWLEDGEMENTS
 
+The interface was chosen to resemble that of L<DBIx::Class::Tree> (eg.
+L<DBIx::Class::Tree::AdjacencyList>) as closely as possible.
 
 =head1 COPYRIGHT & LICENSE
 

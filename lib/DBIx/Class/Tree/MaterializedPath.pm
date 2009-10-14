@@ -1,5 +1,7 @@
 package DBIx::Class::Tree::MaterializedPath;
 
+#TODO create the corresponding resultset class (so that $node_rs->children->search(...) and $node_rs->children_rs->search(...) and $other_rs->search_related(node_rs => ...) can be called
+#TODO use string comparison (materialized_path > '1.2.3' AND materialized_path < '1.2.3.<spec_char>', where <spec_char> is collated after any char in the pk value as string) instead of LIKE (so that it works with placeholders)
 #TODO write DESCRIPTION (describe MP model and it's performance, mention that there can be more than one root nodes, root nodes have 0 as the parent, the id is usually an integer, ...)
 #TODO override ->insert to set the MP
 #TODO tests
@@ -44,6 +46,10 @@ Set up the node result class:
     Tree::MaterializedPath
     # ...
   ));
+
+  __PACKAGE__->resultset_class(
+    'DBIx::Class::Tree::MaterializedPath::ResultSet'  # or a derived class
+  );
 
   __PACKAGE__->add_columns(
     node_id => {

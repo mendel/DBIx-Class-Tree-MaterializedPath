@@ -1,7 +1,6 @@
 package DBIx::Class::Tree::MaterializedPath;
 
 #TODO write DESCRIPTION (describe MP model and it's performance, mention that there can be more than one root nodes, root nodes have 0 as the parent, the id is usually an integer, ...)
-#TODO use M:I::PodInherit
 #TODO override ->insert to set the MP
 #TODO tests
 # * set up SQLite environment

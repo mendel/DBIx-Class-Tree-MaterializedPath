@@ -26,6 +26,7 @@ author_requires 'Test::Pod' => '1.22';
 author_requires 'Test::Pod::Coverage' => '1.08';
 author_requires 'Pod::Coverage' => '0.18';
 author_requires 'Module::Install::ExtraTests' => '0.006';
+author_requires 'Module::Install::Pod::Inherit' => '0.01';
 author_requires 'Module::Install::ReadmeFromPod' => '0.06';
 author_requires 'Module::Install::AuthorRequires' => '0.02';
 author_requires 'Module::Install::Repository' => '0.06';
@@ -33,5 +34,7 @@ author_requires 'Module::Install::Repository' => '0.06';
 extra_tests;
 
 auto_install;
+
+PodInherit;
 
 WriteAll;
